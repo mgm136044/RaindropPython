@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.flet/
+build/
+dist/
+*.egg-info/
+.env
