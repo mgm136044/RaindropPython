@@ -2,17 +2,20 @@
 
 import json
 import os
+import platform
 from pathlib import Path
 
 
 class JsonStore:
-    """~/AppData/RainDrop/ 또는 ~/Library/Application Support/RainDrop/에 JSON 저장."""
+    """플랫폼별 앱 데이터 디렉토리에 JSON 저장."""
 
     def __init__(self):
         if os.name == "nt":  # Windows
-            base = Path(os.environ.get("APPDATA", Path.home()))
-        else:  # macOS/Linux
+            base = Path(os.environ.get("APPDATA", str(Path.home())))
+        elif platform.system() == "Darwin":  # macOS
             base = Path.home() / "Library" / "Application Support"
+        else:  # Linux
+            base = Path(os.environ.get("XDG_DATA_HOME", str(Path.home() / ".local" / "share")))
         self.directory = base / "RainDrop"
         self.directory.mkdir(parents=True, exist_ok=True)
 
